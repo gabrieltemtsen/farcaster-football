@@ -230,7 +230,7 @@ export default function Home({ title = "d33m" }: { title?: string }) {
         ) : loading ? (
           <div>Loading match context is like waiting for VAR...</div>
         ) : (
-          <div></div>
+          <div>The match has not started yet.</div>
         )}
       </div>
     </div>
