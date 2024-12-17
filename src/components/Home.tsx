@@ -11,7 +11,7 @@ import { Button } from "./ui/Button";
 import { Database } from "../../supabase";
 
 const openAiApiKey = process.env.NEXT_PUBLIC_API_AIRSTACK || ''; // TODO: public isn't right here but yolo 
-const supabaseApiKey = process.env.NEXT_PUBLIC_API_SUP || '';    // TODO: public isn't right here but yolo 
+const supabaseApiKey = process.env.NEXT_PUBLIC_API_SUP || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Y3N6eW14aW9mYW9qeXFtenl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE5ODc2MjQsImV4cCI6MjA0NzU2MzYyNH0.xvaDCRZvHr5qpHJGZbWOie9XO5x2cH2EfNeMvf8Hy1g';    // TODO: public isn't right here but yolo 
 
 // Define the Supabase client
 const supabase = createClient<Database>(
