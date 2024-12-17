@@ -4,8 +4,8 @@ import "@/app/globals.css";
 import { Providers } from "@/app/providers";
 
 export const metadata: Metadata = {
-  title: "Farcaster Football",
-  description: "Farcaster EFPL app",
+  title: "Farcaster Footy App",
+  description: "Farcaster Footy App: Live Match Summaries, Fantasy League, Banter bot, Collectables & Contests",
 };
 
 export default function RootLayout({

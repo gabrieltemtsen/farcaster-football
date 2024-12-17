@@ -6,14 +6,14 @@ const fillGameContext = async (sixCharacterString: string): Promise<any> => {
   const openAiApiKey = process.env.NEXT_PUBLIC_OPENAIKEY;
   ; // Make sure to use environment variables in production
   const prefix = "Clear the context history and start over with the following info:";
-  const maxTokens = 16385;
-  let messageHistory: any[] = [];
+  // const maxTokens = 16385;
+  // let messageHistory: any[] = [];
 
-  function countTokens(text: string) {
+  /* function countTokens(text: string) {
     return text.split(/\s+/).length;
-  }
+  } */
 
-  const manageContext = (messages: any[], newMessage: any, maxTokens: number) => {
+/*   const manageContext = (messages: any[], newMessage: any, maxTokens: number) => {
     messages.push(newMessage);
     let totalTokens = messages.reduce((sum, msg) => sum + countTokens(msg), 0);
 
@@ -21,7 +21,7 @@ const fillGameContext = async (sixCharacterString: string): Promise<any> => {
       totalTokens -= countTokens(messages.shift());
     }
     return messages;
-  };
+  }; */
 
   async function fill(sixCharacterString: string, tournament: string): Promise<any> {
     const scoreboardUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${tournament}/scoreboard`;
@@ -51,8 +51,10 @@ const fillGameContext = async (sixCharacterString: string): Promise<any> => {
 
         if (!summaryData.keyEvents) {
           console.log('No key events found for:', sixCharacterString, 'loading standings instead');
-          await sendOpenAi(`Here are the EPL standings: ${summaryData.standings}`, openAiApiKey);
-          summarizedEvents = summaryData.standings.groups[0].groups.entries;
+          //await sendOpenAi(`Here are the EPL standings: ${summaryData.standings}`, openAiApiKey);
+          //summarizedEvents = summaryData.standings.groups[0].groups.entries;
+          summarizedEvents = [{text: `Provide a match preview for ${sixCharacterString.slice(0, 3)} vs ${sixCharacterString.slice(3, 6)} and odds of wiinning. Do not include markdown nor links.`}];
+
         } else {
           summarizedEvents = summaryData.keyEvents.map((event: {
             text: any;
@@ -71,8 +73,10 @@ const fillGameContext = async (sixCharacterString: string): Promise<any> => {
 
         const gameInfo = summaryData.gameInfo;
         const standings = summaryData.standings;
-        const jsonData = JSON.stringify({ summarizedEvents, gameInfo, standings });
-        messageHistory = manageContext(messageHistory, jsonData, maxTokens);
+        const prefixPrompt = {prompt: `Provide a match summary for ${sixCharacterString.slice(0, 3)} vs ${sixCharacterString.slice(3, 6)} do it in a manner that mocks of the losing team. Becareful to not say a team won when if it was a draw or the match is not at FT final time yet. Do not include markdown nor any external links.`};
+
+        const jsonData = JSON.stringify({ prefixPrompt, summarizedEvents, gameInfo, standings });
+        // messageHistory = manageContext(messageHistory, jsonData, maxTokens);
         const aiSummary = await sendOpenAi(jsonData, openAiApiKey || "");
 
         return aiSummary;  // Ensure the matchingEvent is returned
